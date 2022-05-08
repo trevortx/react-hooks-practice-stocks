@@ -1,6 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 
-function SearchBar() {
+function SearchBar( { sortByTicker, sortByPrice, filterStocks } ) {
+  const [alphaSort, setAlphaSort] = useState(true)
+  const [priceSort, setPriceSort] = useState(false)
+
+  function onSort(e) {
+    if (e.target.value === "Price") {
+      setAlphaSort(!alphaSort)
+      setPriceSort(!priceSort)
+      sortByPrice()
+    } else {
+      setPriceSort(!priceSort)
+      setAlphaSort(!alphaSort)
+      sortByTicker()
+    }
+  }
+
+  function onFilter(e) {
+    filterStocks(e.target.value)
+  }
+
   return (
     <div>
       <strong>Sort by:</strong>
@@ -9,8 +28,8 @@ function SearchBar() {
           type="radio"
           value="Alphabetically"
           name="sort"
-          checked={null}
-          onChange={null}
+          checked={alphaSort}
+          onChange={(e) => onSort(e)}
         />
         Alphabetically
       </label>
@@ -19,15 +38,16 @@ function SearchBar() {
           type="radio"
           value="Price"
           name="sort"
-          checked={null}
-          onChange={null}
+          checked={priceSort}
+          onChange={(e) => onSort(e)}
         />
         Price
       </label>
       <br />
       <label>
         <strong>Filter:</strong>
-        <select onChange={null}>
+        <select onChange={onFilter}>
+          <option value="None">None</option>
           <option value="Tech">Tech</option>
           <option value="Sportswear">Sportswear</option>
           <option value="Finance">Finance</option>
